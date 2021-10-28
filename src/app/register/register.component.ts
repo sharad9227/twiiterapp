@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import { AlertService  } from '../services/alert.service';
 import {UserService} from '../services/user.service'
 import {AuthenticationService} from '../services/authentication.service';
+import { HttpHeaders } from '@angular/common/http';
 
 
 
@@ -35,12 +36,10 @@ export class RegisterComponent implements OnInit {
             lastName: ['', Validators.required],
             username: ['', Validators.required],
             email: ['', Validators.required],
-            password: ['', [Validators.required, Validators.minLength(6)],
+            password: ['', [Validators.required, Validators.minLength(6)]],
             confirmPassword: ['', Validators.required]
-        }, {
-            validator: MustMatch('password', 'confirmPassword')
-
-          });
+        }
+          );
     }
 
     // convenience getter for easy access to form fields
@@ -53,22 +52,21 @@ export class RegisterComponent implements OnInit {
         if (this.registerForm.invalid) {
             return;
         }
-
+        const headers= new HttpHeaders()
+        .set('content-type', 'application/json')
+        .set('Access-Control-Allow-Origin', '*');
         this.loading = true;
-        this.userService.register(this.registerForm.value)
-            .pipe(first())
+        this.userService.register(this.registerForm.value,headers)
             .subscribe(
                 data => {
-                    this.alertService.success('Registration successful', true);
-                    this.router.navigate(['/login']);
+                   ///// this.alertSeßrvice.success('Registration successful', true);
+                   // this.router.navigate(['/login']);
+                   console.log(data);
                 },
                 error => {
                     this.alertService.error(error);
                     this.loading = false;
                 });
     }
-}
-function MustMatch(arg0: string, arg1: string): any {
-  throw new Error('Function not implemented.');
 }
 

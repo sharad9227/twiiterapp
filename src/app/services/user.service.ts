@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { User } from './../../models/User';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
+
 export class UserService {
     constructor(private http: HttpClient) { }
 
@@ -11,8 +13,8 @@ export class UserService {
         return this.http.get<User[]>(`/users`);
     }
 
-    register(user: User) {
-        return this.http.post(`/users/register`, user);
+    register(user: User,headers):Observable<any> {
+        return this.http.post(`http://localhost:8080/api/users/register`, user,{headers});
     }
 
     delete(id: number) {
