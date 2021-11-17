@@ -59,8 +59,16 @@ export class RegisterComponent implements OnInit {
         this.userService.register(this.registerForm.value,headers)
             .subscribe(
                 data => {
-                   ///// this.alertSeßrvice.success('Registration successful', true);
-                   // this.router.navigate(['/login']);
+                    if(data.status == 200)
+                   {
+                    this.alertService.success('Registration successful', true);
+                    this.router.navigate(['/login']);
+                   }
+                   else{
+                    this.alertService.error("Error in Registration, please fill in mandatory fields and try again");
+
+                  }
+
                    console.log(data);
                 },
                 error => {

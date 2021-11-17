@@ -125,7 +125,6 @@ body {
 
 .tweetbox__input {
     display: flex;
-    padding: 20px;
 }
 
 .tweetbox__input input {
@@ -148,6 +147,10 @@ body {
     margin-left: auto;
 }
 
+.homePanel {
+    display: flex;
+}
+
 
 /* post */
 
@@ -161,6 +164,7 @@ body {
     align-items: flex-start;
     border-bottom: 1px solid var(--twitter-background);
     padding-bottom: 10px;
+    padding-right: 1%;
 }
 
 .post__body img {

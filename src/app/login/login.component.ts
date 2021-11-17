@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
-
+import {UserService} from '../services/user.service'
 import { AccountService } from '../services/account.service';
 import {AlertService} from '../services/alert.service'
+import { User } from 'src/models/User';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -15,16 +16,17 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
+  private userDetails;
   constructor( private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private accountService: AccountService,
-    private alertService: AlertService
+    private userService: UserService,
+    private alertService: AlertService,
+
+
 ) {
 
-  if (this.accountService.userValue) {
-    this.router.navigate(['/']);
-}
+
 
  }
 
@@ -38,6 +40,9 @@ export class LoginComponent implements OnInit {
   this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
   }
+
+   // convenience getter for easy access to form fields
+   get form() { return this.loginForm.controls; }
  onSubmit() {
         this.submitted = true;
 
@@ -50,11 +55,16 @@ export class LoginComponent implements OnInit {
         }
 
         this.loading = true;
-        this.accountService.login(this.f.username.value, this.f.password.value)
+        this.userDetails={'email':'','password':''};
+        this.userDetails.email=this.form.username.value;
+        this.userDetails.password= this.form.password.value;
+        this.userService.login(this.userDetails)
             .pipe(first())
             .subscribe(
                 data => {
-                    this.router.navigate([this.returnUrl]);
+                   // this.router.navigate([this.returnUrl]);
+                   localStorage.setItem('user', JSON.stringify(this.userDetails));
+                   this.router.navigate(['/home/'])
                 },
                 error => {
                     this.alertService.error(error);
