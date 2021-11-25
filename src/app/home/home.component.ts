@@ -11,6 +11,9 @@ import { UserService } from '../services/user.service';
 export class HomeComponent implements OnInit {
 public tweetForm:FormGroup;
 private userName:User;
+public allTweets:User[];
+
+
 public tweetMessage={
   message: ''
 
@@ -21,10 +24,20 @@ public tweetMessage={
 
    get form() { return this.tweetForm.controls; }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.tweetForm=this.fb.group({
       tweetMessage: [''],
     })
+
+    await this.userService.getAll() .subscribe(
+      data => {
+      this.allTweets = data;
+
+      },
+      error=>{
+
+        alert("erorr in fetch"+error);
+      });
 
 
   }
@@ -37,9 +50,10 @@ public tweetMessage={
      if (this.tweetForm.invalid) {
       return;
   }
-     this.userName=JSON.parse(localStorage.getItem('user'));
-    this.tweetMessage=this.form.tweetMessage.value;
-     this.userService.saveTweet(this.userName, this.tweetMessage)
+
+    this.userName=JSON.parse(localStorage.getItem('user'));
+    this.tweetMessage.message=this.form.tweetMessage.value;
+     this.userService.saveTweet(this.userName.loginId, this.tweetMessage)
     .pipe(first())
     .subscribe(
         data => {

@@ -1,5 +1,5 @@
 export class User {
-  id: number;
+  loginId: number;
   username: string;
   password: string;
   confirmPassword:string;
@@ -9,4 +9,5 @@ export class User {
   lastName: string;
   token: string;
   message: any;
+  userDetails:any;
 }

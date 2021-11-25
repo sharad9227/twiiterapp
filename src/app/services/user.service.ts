@@ -11,16 +11,16 @@ export class UserService {
     constructor(private http: HttpClient) { }
 
     getAll() {
-        return this.http.get<User[]>(`/users`);
+        return this.http.get<User[]>(this.baseUrl+`all`);
     }
 
     register(user: User,headers):Observable<any> {
-        return this.http.post(this.baseUrl+`/users/register`, user,{headers});
+        return this.http.post(this.baseUrl+`users/register`, user,{headers});
     }
 
     login(user:User)
     {
-      return this.http.post(this.baseUrl+`/users/login`, user);
+      return this.http.post(this.baseUrl+`login`, user);
 
     }
     delete(id: number) {
@@ -29,7 +29,7 @@ export class UserService {
 
     saveTweet(username,message)
     {
-      return this.http.post(this.baseUrl+`${username}`,message);
+      return this.http.post(this.baseUrl+`${username}`+`/add`,message);
     }
 
 }
