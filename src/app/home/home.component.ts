@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import { User } from 'src/models/User';
 import { UserService } from '../services/user.service';
+import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -18,7 +20,7 @@ public tweetMessage={
   message: ''
 
 }
-  constructor(private fb:FormBuilder, private userService: UserService) {
+  constructor(private fb:FormBuilder,private router: Router, private userService: UserService,private authService:AuthenticationService) {
 
    }
 
@@ -44,6 +46,10 @@ public tweetMessage={
 
 
 
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+}
 
   onSubmit(){
      // stop here if form is invalid
